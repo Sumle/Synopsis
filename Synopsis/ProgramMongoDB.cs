@@ -24,7 +24,7 @@ foreach (var prins in princips)
 }
 stopwatch.Start();
 
-var pp = principals.Aggregate().Limit(10).Lookup("review_id", "author_id", "review_rating", "review_likes").ToList();
+var pp = principals.Aggregate().Limit(1000).Lookup("review_id", "author_id", "review_rating", "review_likes").ToList();
 
 stopwatch.Stop();
 
