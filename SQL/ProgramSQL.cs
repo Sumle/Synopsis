@@ -40,8 +40,8 @@ namespace SQLServerTest
                         }
                     }
                     stopwatch.Stop();
-                    TimeSpan elapsedSeconds = stopwatch.Elapsed;
-                    Console.WriteLine($"Time taken for the 1st operation: {elapsedSeconds} seconds");
+                    double elapsedSeconds = stopwatch.ElapsedMilliseconds / 1000.0;
+                    Console.WriteLine($"Time taken for operation: {elapsedSeconds} seconds");
                 }
                 catch (Exception ex)
                 {
