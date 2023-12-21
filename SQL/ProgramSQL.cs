@@ -16,7 +16,8 @@ namespace SQLServerTest
                 {
                     connection.Open();
 
-                    string sqlQuery = "SELECT [id], [review_id], [pseudo_author_id], [author_name], [review_text], [review_rating], [review_likes], [author_app_version], [review_timestamp] FROM [dbo].[Reviews]";
+                    string sqlQuery = "SELECT [id], [review_id], [pseudo_author_id], [author_name], [review_text], [review_rating], [review_likes], [author_app_version], [review_timestamp] FROM [dbo].[Reviews]" +  
+                        "ORDER BY [review_likes] ASC, [review_rating] DESC";
 
                     Stopwatch stopwatch = new Stopwatch();
                     stopwatch.Start();
@@ -42,6 +43,35 @@ namespace SQLServerTest
                     stopwatch.Stop();
                     double elapsedSeconds = stopwatch.ElapsedMilliseconds / 1000.0;
                     Console.WriteLine($"Time taken for operation: {elapsedSeconds} seconds");
+
+                    string sqlQuery2 = "SELECT [id], [review_id], [pseudo_author_id], [author_name], [review_text], [review_rating], [review_likes], [author_app_version], [review_timestamp] FROM [dbo].[Reviews]";
+
+                    Console.WriteLine("Uden index:");
+                    Console.WriteLine();
+                    Stopwatch stopwatch2 = new Stopwatch();
+                    stopwatch2.Start();
+                    using (SqlCommand command2 = new SqlCommand(sqlQuery2, connection))
+                    {
+                        using (SqlDataReader reader2 = command2.ExecuteReader())
+                        {
+                            if (reader2.HasRows)
+                            {
+                                while (reader2.Read())
+                                {
+                                    Console.WriteLine($"ID: {reader2["id"]}, Review ID: {reader2["review_id"]}, Pesudo author ID: {reader2["pseudo_author_id"]}, Author Name: {reader2["author_name"]}, " +
+                                        $"Review Text: {reader2["review_text"]}, Review Rating: {reader2["review_rating"]}, Review Likes: {reader2["review_likes"]}, Author app Version: {reader2["author_app_version"]}" +
+                                        $"Review Timestamp: {reader2["review_timestamp"]}");
+                                }
+                            }
+                            else
+                            {
+                                Console.WriteLine("Ingen rækker fundet.");
+                            }
+                        }
+                    }
+                    stopwatch2.Stop();
+                    double elapsedSeconds2 = stopwatch2.ElapsedMilliseconds / 1000.0;
+                    Console.WriteLine($"Time taken for operation: {elapsedSeconds2} seconds");
                 }
                 catch (Exception ex)
                 {
